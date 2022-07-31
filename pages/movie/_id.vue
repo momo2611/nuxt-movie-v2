@@ -82,6 +82,16 @@
 import LeftMovieInfo from "../../components/LeftMovieInfo.vue";
 import RightMovieInfo from "../../components/RightMovieInfo.vue";
 export default {
+  head() {
+    return {
+      title: this.movieTitle.title,
+    };
+  },
+  data() {
+    return {
+      movieTitle: "",
+    };
+  },
   async asyncData({ params, $axios }) {
     try {
       const res = await $axios.$get(
@@ -89,6 +99,7 @@ export default {
       );
       const recom = await $axios.$get(`/movie/${params.id}/recommendations`);
       return {
+        movieTitle: res,
         data: res,
         recomMovie: recom.results.slice(0, 6),
       };

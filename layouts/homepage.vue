@@ -22,6 +22,11 @@ import Search from "../components/Search.vue";
 import Slider from "../components/Slider.vue";
 export default {
   name: "DefaultLayout",
+  head() {
+    return {
+      title: "Home",
+    };
+  },
   data() {
     return {
       overlay: false,

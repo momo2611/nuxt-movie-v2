@@ -48,6 +48,11 @@
 import MovieCard from "../components/MovieCard.vue";
 import SectionMovies from "../components/SectionMovies.vue";
 export default {
+  head() {
+    return {
+      title: "Movies",
+    };
+  },
   data() {
     return {
       movies: [],
