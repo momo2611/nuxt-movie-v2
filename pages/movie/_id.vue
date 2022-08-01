@@ -45,7 +45,7 @@
                 :items="data.credits.cast"
               >
                 <template v-slot:default="{ item }">
-                  <v-list-item :key="item.id">
+                  <v-list-item :key="item.id" :to="`/actor/${item.id}`" nuxt>
                     <v-list-item-avatar>
                       <v-img :src="getCastAvatar(item)" />
                     </v-list-item-avatar>

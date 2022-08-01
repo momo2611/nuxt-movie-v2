@@ -14,7 +14,14 @@
     </v-row>
     <!-- row actors -->
     <v-row v-else class="mb-4 mt-2 px-4">
-      <v-col cols="12" sm="3" v-for="actor in actors" :key="actor.id">
+      <v-col
+        cols="12"
+        sm="6"
+        md="4"
+        lg="3"
+        v-for="actor in actors"
+        :key="actor.id"
+      >
         <v-card id="card-actor">
           <div class="d-flex flex-no-wrap justify-space-between">
             <div>
@@ -30,8 +37,10 @@
                   height="36px"
                   right
                   color="rgba(0,0,0,0.5)"
+                  :to="`/actor/${actor.id}`"
+                  nuxt
                 >
-                  Known for
+                  More info
                 </v-btn>
               </v-card-actions>
             </div>
