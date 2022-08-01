@@ -48,7 +48,7 @@ export default {
     baseURL: 'https://api.themoviedb.org/3/',
     headers: {
       common: {
-        Authorization: `Bearer ${process.env.TMDB_TOKEN}`
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZDNjODFhZTg0MGRiMDU4YWQ2Y2JmYjE2ZGY2NWM4MSIsInN1YiI6IjYyYzZiNTU0MTJjNjA0MDA0ZjEzMzJjNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ySyZ9xdd0LmMRCCmASkcAo8NxjaRPGkF7IDOBSbOrlo`
       }
     }
   },
