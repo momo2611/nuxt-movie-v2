@@ -6,7 +6,7 @@
       </v-col>
       <v-col cols="12" sm="8">
         <div class="d-md-flex align-center">
-          <h2 class="display-1 font-weight-bold">{{ data.original_title }}</h2>
+          <h2 class="display-1 font-weight-bold">{{ data.name }}</h2>
           <v-spacer></v-spacer>
           <Rating :data="data" />
         </div>
@@ -63,17 +63,45 @@
           </v-col>
         </v-row>
       </v-col>
-      <!-- Recommendation -->
-      <h4 class="pink--text font-weight-bold title mt-2 px-2">
-        More like this
-      </h4>
-      <v-row class="mt-2 mb-4 px-2">
-        <v-col cols="12" sm="2" v-for="rc in recomMovie" :key="rc.id">
-          <v-card :to="`/movie/${rc.id}`" nuxt>
-            <v-img :src="`https://image.tmdb.org/t/p/w300${rc.poster_path}`" />
+    </v-row>
+    <!-- Season -->
+    <h4 class="pink--text font-weight-bold title">Seasons</h4>
+    <v-row class="mt-2 px-2">
+      <v-slide-group multiple show-arrows>
+        <v-slide-item v-for="(season, index) in dataSeason" :key="index">
+          <v-card max-width="160" max-height="300" class="ma-2">
+            <v-img
+              cover
+              width="160"
+              height="180"
+              :src="`https://image.tmdb.org/t/p/w500${season.poster_path}`"
+            />
+            <v-card-title class="text-caption font-weight-medium"
+              >{{ season.name }} ({{
+                new Date(season.air_date).getFullYear()
+              }})</v-card-title
+            >
           </v-card>
-        </v-col>
-      </v-row>
+        </v-slide-item>
+      </v-slide-group>
+    </v-row>
+    <!-- Recommendation -->
+    <h4 class="pink--text font-weight-bold title mt-4 px-2">More like this</h4>
+    <v-row class="mt-1 mb-4 px-2">
+      <v-col cols="12" xs="6" sm="2" v-for="rc in recomSeries" :key="rc.id">
+        <v-card max-width="160" max-height="320" :to="`/tv/${rc.id}`" nuxt>
+          <v-img
+            width="160"
+            height="230"
+            :src="`https://image.tmdb.org/t/p/w300${rc.poster_path}`"
+          />
+          <v-card-title class="text-caption font-weight-medium"
+            >{{ rc.name }} ({{
+              new Date(rc.first_air_date).getFullYear()
+            }})</v-card-title
+          >
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -84,25 +112,25 @@ import RightMovieInfo from "../../components/RightMovieInfo.vue";
 export default {
   head() {
     return {
-      title: this.movieTitle.title,
+      title: this.seriesTitle.name,
     };
   },
   data() {
     return {
-      movieTitle: "",
+      seriesTitle: "",
     };
   },
   async asyncData({ params, $axios }) {
     try {
       const res = await $axios.$get(
-        `/movie/${params.id}?append_to_response=credits,videos,images`
+        `/tv/${params.id}?append_to_response=credits,videos,images`
       );
-      const recom = await $axios.$get(`/movie/${params.id}/recommendations`);
-      console.log(res);
+      const recom = await $axios.$get(`/tv/${params.id}/recommendations`);
       return {
-        movieTitle: res,
+        seriesTitle: res,
         data: res,
-        recomMovie: recom.results.slice(0, 6),
+        dataSeason: res.seasons,
+        recomSeries: recom.results.slice(0, 6),
       };
     } catch (e) {
       console.log(e);

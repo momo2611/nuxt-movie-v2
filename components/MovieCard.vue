@@ -1,10 +1,51 @@
 <template>
-  <v-card :to="`/movie/${movie.id}`" nuxt>
+  <v-card v-if="movie.title" :to="`/movie/${movie.id}`" nuxt>
     <v-img
       height="300"
       :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`"
     />
-    <v-card-title>{{ movie.title }}</v-card-title>
+    <v-card-title v-if="movie.title">{{ movie.title }}</v-card-title>
+    <v-card-title v-else-if="movie.name">{{ movie.name }}</v-card-title>
+    <v-card-text>
+      <v-row align="center" class="mx-0" no-gutters>
+        <v-col cols="12" class="d-flex" md="8">
+          <v-rating
+            :value="movie.vote_average / 2"
+            half-increments
+            length="5"
+            color="yellow"
+            dense
+            readonly
+            size="16"
+          ></v-rating>
+          <span class="grey--text text--lighten-1 text-caption mr-2 mt-1">
+            {{ movie.vote_average }}
+          </span>
+        </v-col>
+      </v-row>
+      <v-row v-if="$store.state.genres">
+        <v-col cols="12">
+          <v-chip
+            v-for="genre in movie.genre_ids"
+            :key="genre"
+            label
+            small
+            color="pink"
+            class="white--text mr-1 mb-sm-2"
+          >
+            {{ genreTypeName(genre) }}
+          </v-chip>
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
+  <v-card v-else-if="movie.name" :to="`/tv/${movie.id}`" nuxt>
+    <v-img
+      height="300"
+      :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`"
+    />
+    <v-card-title v-if="movie.title">{{ movie.title }}</v-card-title>
+    <v-card-title v-else-if="movie.name">{{ movie.name }}</v-card-title>
     <v-card-text>
       <v-row align="center" class="mx-0" no-gutters>
         <v-col cols="12" class="d-flex" md="8">

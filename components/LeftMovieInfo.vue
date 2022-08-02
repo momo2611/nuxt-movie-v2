@@ -73,9 +73,11 @@
                   <div class="iframe-container">
                     <iframe
                       allowfullscreen
-                      :src="mediaUrl"
+                      :src="streamUrl"
                       frameborder="0"
                       v-if="isVideo"
+                      scrolling="no"
+                      allowtransparency="true"
                     ></iframe>
                   </div>
                 </v-col>
@@ -104,6 +106,7 @@ export default {
       dialog: false,
       isVideo: false,
       mediaUrl: "",
+      streamUrl: "",
     };
   },
   methods: {
@@ -118,8 +121,12 @@ export default {
       });
       return "https://www.youtube.com/embed/" + videoTrailer.key;
     },
+    getMovie() {
+      return "https://moviehab.com/embed/" + this.data.id;
+    },
     openYtModal() {
       this.mediaUrl = this.getTrailer();
+      this.streamUrl = this.getMovie();
       this.isVideo = true;
     },
   },

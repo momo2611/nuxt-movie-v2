@@ -21,7 +21,17 @@
         <span v-if="data.genres.length - 1 != i">, </span>
       </span>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" v-if="data.first_air_date">
+      <h4 class="pink--text title">First air date</h4>
+      <span>{{
+        new Date(data.first_air_date).toLocaleString("en-us", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })
+      }}</span>
+    </div>
+    <div class="mt-2" v-else>
       <h4 class="pink--text title">Release Date</h4>
       <span>{{
         new Date(data.release_date).toLocaleString("en-us", {
@@ -31,11 +41,18 @@
         })
       }}</span>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" v-if="data.runtime">
       <h4 class="pink--text title">Runtime</h4>
       <span>{{ data.runtime }} mins</span>
     </div>
-    <div class="mt-2">
+    <div class="mt-2" v-else-if="data.number_of_seasons">
+      <h4 class="pink--text title">Number of seasons</h4>
+      <span
+        >{{ data.number_of_seasons }}
+        {{ data.number_of_seasons > 1 ? "seasons" : "season" }}</span
+      >
+    </div>
+    <div class="mt-2" v-if="data.revenue">
       <h4 class="pink--text title">Gross worldwide</h4>
       <span
         >{{
