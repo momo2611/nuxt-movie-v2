@@ -1,16 +1,8 @@
 <template>
   <v-app>
-    <Navbar />
     <v-main>
       <Nuxt />
     </v-main>
-    <Footer />
-    <v-overlay :value="overlay" dark opacity="0.95">
-      <Search />
-      <v-btn v-if="overlay" @click="overlay = false" icon>
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-    </v-overlay>
   </v-app>
 </template>
 

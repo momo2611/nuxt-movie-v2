@@ -25,7 +25,15 @@
           :to="item.link"
           >{{ item.title }}</v-btn
         >
+        <!-- log in log out -->
+        <client-only>
+          <v-btn text link v-if="!user" to="/login">Sign In</v-btn>
+          <v-btn text link v-else v-on:click="signOut()"
+            >Sign Out</v-btn
+          ></client-only
+        >
       </v-toolbar-items>
+
       <!-- Search icon -->
       <v-btn icon @click="$nuxt.$emit('openOverlay', true)">
         <v-icon>mdi-magnify</v-icon>
@@ -48,6 +56,30 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <!-- log in log out -->
+        <client-only>
+          <v-list-item v-if="!user" to="/login">
+            <v-list-item-icon>
+              <v-icon>mdi-login</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Sign In</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-else>
+            <v-list-item-icon>
+              <v-icon>mdi-logout</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title v-on:click="signOut()"
+                >Sign Out</v-list-item-title
+              >
+            </v-list-item-content>
+          </v-list-item>
+        </client-only>
+        <!-- end log -->
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -62,11 +94,20 @@ export default {
         { title: "Movies", icon: "mdi-movie-open-outline", link: "/movies" },
         { title: "TV Series", icon: "mdi-movie-roll", link: "/series" },
         { title: "Actors", icon: "mdi-account-multiple", link: "/actors" },
-        { title: "Login", icon: "mdi-login", link: "/login" },
-        { title: "Logout", icon: "mdi-logout", link: "/logout" },
       ],
       drawer: false,
     };
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
+  },
+  methods: {
+    signOut() {
+      this.$fire.auth.signOut();
+      window.location = "/";
+    },
   },
 };
 </script>
