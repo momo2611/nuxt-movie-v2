@@ -1,6 +1,7 @@
 export const state = () => ({
     genres: [],
-    now_playing: []
+    now_playing: [],
+    user: false
 })
 
 export const mutations = {
@@ -9,7 +10,15 @@ export const mutations = {
     },
     SET_NOWPLAYING(state, data) {
         state.now_playing = data
-    }
+    },
+    ON_AUTH_STATE_CHANGED_MUTATION: (state, { authUser, claims }) => {
+        if (authUser) {
+            const { uid, email, displayName } = authUser;
+            state.user = { uid, email, displayName };
+        } else {
+            state.user = false;
+        }
+    },
 }
 
 export const actions = {
@@ -34,5 +43,5 @@ export const actions = {
 
             console.log(e);
         }
-    }
+    },
 }
