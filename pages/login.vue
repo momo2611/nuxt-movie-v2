@@ -225,7 +225,7 @@
 
 <script>
 export default {
-  layout: "default",
+  layout: "log",
   head() {
     return {
       title: "Login",

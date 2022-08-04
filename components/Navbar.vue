@@ -73,9 +73,9 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title v-on:click="signOut()"
-                >Sign Out</v-list-item-title
-              >
+              <v-list-item-title v-on:click="signOut()">{{
+                user.email
+              }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </client-only>
