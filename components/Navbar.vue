@@ -14,7 +14,8 @@
         <!-- log in log out -->
         <client-only>
           <v-btn text link v-if="!user" to="/login">Sign In</v-btn>
-          <v-btn text link v-else v-on:click="signOut()">Sign Out</v-btn>
+          <v-btn text link v-if="user" to="/profile">Profile</v-btn>
+          <v-btn text link v-if="user" v-on:click="signOut()">Sign Out</v-btn>
         </client-only>
       </v-toolbar-items>
 
@@ -50,15 +51,24 @@
               <v-list-item-title>Sign In</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-else>
+          <!-- user -->
+          <v-list-item v-if="user" to="/profile">
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>{{ user.email }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <!-- out -->
+          <v-list-item v-if="user">
             <v-list-item-icon>
               <v-icon>mdi-logout</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title v-on:click="signOut()">{{
-              user.email
-              }}</v-list-item-title>
+              <v-list-item-title v-on:click="signOut()">Sign Out</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </client-only>

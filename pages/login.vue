@@ -250,6 +250,15 @@ export default {
     source: String,
   },
   methods: {
+    async mounted() {
+      let userTrue = await new Promise((resolve, reject) => {
+        this.$fire.auth.onAuthStateChanged((user) => resolve(user));
+      });
+      this.$store.commit("updateUser", userTrue);
+      if (userTrue) {
+        this.$store.dispatch("getCurrentUser", userTrue);
+      }
+    },
     signIn() {
       const that = this;
       this.$fire.auth

@@ -1,7 +1,13 @@
+
 export const state = () => ({
     genres: [],
     now_playing: [],
-    user: false
+    user: false,
+    profileEmail: null,
+    profileFirstName: null,
+    profileLastName: null,
+    profileId: null,
+    profileInitials: null,
 })
 
 export const mutations = {
@@ -18,6 +24,25 @@ export const mutations = {
         } else {
             state.user = false;
         }
+    },
+    updateUser(state, payload) {
+        state.user = payload;
+    },
+    setProfileInfo(state, doc) {
+        state.profileId = doc.id;
+        state.profileEmail = doc.email;
+        state.profileFirstName = doc.firstName;
+        state.profileLastName = doc.lastName;
+    },
+    setProfileInitials(state) {
+        state.profileInitials =
+            state.profileFirstName.match(/(\b\S)?/g).join("") + state.profileLastName.match(/(\b\S)?/g).join("");
+    },
+    changeFirstName(state, payload) {
+        state.profileFirstName = payload;
+    },
+    changeLastName(state, payload) {
+        state.profileLastName = payload;
     },
 }
 
@@ -41,6 +66,31 @@ export const actions = {
             }
         } catch (e) {
 
+            console.log(e);
+        }
+    },
+    async getCurrentUser({ commit }, user) {
+        try {
+            const dataBase = await this.$fire.firestore.collection("users").doc(this.$fire.auth.currentUser.uid).get();
+            const dbResults = await dataBase.data();
+            if (dbResults) {
+                commit("setProfileInfo", dbResults);
+                commit("setProfileInitials");
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    },
+    async updateUserSettings({ commit, state }) {
+
+        try {
+            const dataBase = await this.$fire.firestore.collection("users").doc(this.$fire.auth.currentUser.uid);
+            await dataBase.update({
+                firstName: state.profileFirstName,
+                lastName: state.profileLastName,
+            });
+            commit("setProfileInitials");
+        } catch (e) {
             console.log(e);
         }
     },
