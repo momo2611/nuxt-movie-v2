@@ -5,15 +5,7 @@
       <!-- trailer -->
       <v-dialog v-model="dialog" persistent max-width="800">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            color="pink"
-            block
-            depressed
-            class="white--text"
-            v-bind="attrs"
-            v-on="on"
-            @click="openYtModal"
-          >
+          <v-btn color="pink" block depressed class="white--text" v-bind="attrs" v-on="on" @click="openYtModal">
             <v-icon>mdi-information-outline </v-icon>
             Watch trailer
           </v-btn>
@@ -24,20 +16,15 @@
             <span class="headline">{{ data.title }}</span>
           </v-card-title>
           <v-card-text>
-            <v-card-container>
+            <v-card>
               <v-row>
                 <v-col cols="12">
                   <div class="iframe-container">
-                    <iframe
-                      allowfullscreen
-                      :src="mediaUrl"
-                      frameborder="0"
-                      v-if="isVideo"
-                    ></iframe>
+                    <iframe allowfullscreen :src="mediaUrl" frameborder="0" v-if="isVideo"></iframe>
                   </div>
                 </v-col>
               </v-row>
-            </v-card-container>
+            </v-card>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -48,15 +35,8 @@
       <!-- streaming -->
       <v-dialog v-model="dialog" persistent max-width="800">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            color="blue lighten-1"
-            block
-            depressed
-            class="white--text mt-2"
-            v-bind="attrs"
-            v-on="on"
-            @click="openYtModal"
-          >
+          <v-btn color="blue lighten-1" block depressed class="white--text mt-2" v-bind="attrs" v-on="on"
+            @click="openStModal">
             <v-icon>mdi-arrow-right-drop-circle-outline </v-icon>
             Streaming now
           </v-btn>
@@ -67,22 +47,16 @@
             <span class="headline">{{ data.title }}</span>
           </v-card-title>
           <v-card-text>
-            <v-card-container>
+            <v-card>
               <v-row>
                 <v-col cols="12">
                   <div class="iframe-container">
-                    <iframe
-                      allowfullscreen
-                      :src="streamUrl"
-                      frameborder="0"
-                      v-if="isVideo"
-                      scrolling="no"
-                      allowtransparency="true"
-                    ></iframe>
+                    <iframe allowfullscreen :src="streamUrl" frameborder="0" v-if="isVideo" scrolling="no"
+                      allowtransparency="true"></iframe>
                   </div>
                 </v-col>
               </v-row>
-            </v-card-container>
+            </v-card>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -119,16 +93,19 @@ export default {
       const videoTrailer = this.data.videos.results.find((e) => {
         return e.type === "Trailer";
       });
-      return "https://www.youtube.com/embed/" + videoTrailer.key;
+      return "https://www.youtube-nocookie.com/embed/" + videoTrailer.key;
     },
     getMovie() {
       return "https://moviehab.com/embed/" + this.data.id;
     },
     openYtModal() {
       this.mediaUrl = this.getTrailer();
-      this.streamUrl = this.getMovie();
       this.isVideo = true;
     },
+    openStModal() {
+      this.streamUrl = this.getMovie();
+      this.isVideo = true;
+    }
   },
 };
 </script>
@@ -139,6 +116,7 @@ export default {
   padding-top: 56.25%;
   position: relative;
 }
+
 .iframe-container iframe {
   position: absolute;
   height: 100%;

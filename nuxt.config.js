@@ -33,7 +33,13 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
-    '@nuxtjs/vuetify',
+    ['@nuxtjs/vuetify',
+      {
+        treeShake: true,
+        theme: {
+          dark: true,
+        }
+      }]
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -54,7 +60,8 @@ export default {
           initialize: {
             onAuthStateChangedMutation: "ON_AUTH_STATE_CHANGED_MUTATION",
           },
-        }
+        },
+        firestore: true
       }
     }]
   ],

@@ -21,29 +21,16 @@
             <!-- Images preview -->
             <h4 class="pink--text font-weight-bold title">Photos</h4>
             <v-slide-group multiple show-arrows>
-              <v-slide-item
-                v-for="(image, index) in data.images.backdrops"
-                :key="index"
-                v-slot="{ toggle }"
-              >
+              <v-slide-item v-for="(image, index) in data.images.backdrops" :key="index" v-slot="{ toggle }">
                 <v-card @click="toggle" class="ma-2">
-                  <v-img
-                    cover
-                    width="120"
-                    height="180"
-                    :src="`https://image.tmdb.org/t/p/w300${image.file_path}`"
-                  />
+                  <v-img cover width="120" height="180" :src="`https://image.tmdb.org/t/p/w300${image.file_path}`" />
                 </v-card>
               </v-slide-item>
             </v-slide-group>
             <!-- Cast -->
             <h4 class="pink--text font-weight-bold title">Top cast</h4>
             <v-responsive>
-              <v-virtual-scroll
-                :height="240"
-                item-height="48"
-                :items="data.credits.cast"
-              >
+              <v-virtual-scroll class="scroll" :height="240" item-height="48" :items="data.credits.cast">
                 <template v-slot:default="{ item }">
                   <v-list-item :key="item.id" :to="`/actor/${item.id}`" nuxt>
                     <v-list-item-avatar>
@@ -51,7 +38,7 @@
                     </v-list-item-avatar>
                     <v-list-item-title>{{ item.name }}</v-list-item-title>
                     <v-list-item-subtitle>{{
-                      item.character
+                        item.character
                     }}</v-list-item-subtitle>
                   </v-list-item>
                 </template>
@@ -98,7 +85,6 @@ export default {
         `/movie/${params.id}?append_to_response=credits,videos,images`
       );
       const recom = await $axios.$get(`/movie/${params.id}/recommendations`);
-      console.log(res);
       return {
         movieTitle: res,
         data: res,
@@ -121,4 +107,18 @@ export default {
 </script>
 
 <style>
+.scroll::-webkit-scrollbar {
+  width: 4px;
+  height: 5px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background-color: rgb(215, 28, 92);
+}
+
+.scroll::-webkit-scrollbar-track {
+  background-color: rgb(52, 51, 51);
+}
 </style>

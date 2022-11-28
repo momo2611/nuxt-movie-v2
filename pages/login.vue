@@ -139,10 +139,11 @@
                     </h6>
                     <v-row align="center" justify="center" class="mt-12 mb-6">
                       <v-col cols="12" sm="8">
-                        <!-- <v-row>
+                        <v-row>
                           <v-col cols="12" sm="6">
                             <v-text-field
                               label="First Name"
+                              v-model="fname"
                               outlined
                               dense
                               color="blue"
@@ -153,6 +154,7 @@
                           <v-col cols="12" sm="6">
                             <v-text-field
                               label="Last Name"
+                              v-model="lname"
                               outlined
                               dense
                               color="blue"
@@ -160,7 +162,7 @@
                               class="mt-4"
                             />
                           </v-col>
-                        </v-row> -->
+                        </v-row>
                         <v-text-field
                           label="Email"
                           v-model="email"
@@ -238,6 +240,8 @@ export default {
       email: "",
       password: "",
     },
+    fname: "",
+    lname: "",
     email: "",
     password: "",
     repassword: "",
@@ -270,22 +274,34 @@ export default {
           console.log(err);
         });
     },
-    RegisterAccount() {
+    async RegisterAccount() {
       const that = this;
       if (this.email !== "" && this.password !== "" && this.repassword !== "") {
         if (this.password === this.repassword) {
           // call
-          this.$fire.auth
-            .createUserWithEmailAndPassword(this.email, this.password)
-            .then((user) => {
-              that.$router.push({ name: "index" });
-              console.log(this.email, this.password);
-            });
+          const createUser =
+            await this.$fire.auth.createUserWithEmailAndPassword(
+              this.email,
+              this.password
+            );
+          const result = await createUser;
+          const dataBase = this.$fire.firestore
+            .collection("users")
+            .doc(result.user.uid);
+          await dataBase.set({
+            firstName: this.fname,
+            lastName: this.lname,
+            email: this.email,
+          });
+          this.$router.push({ name: "index" });
+          return;
         } else {
           console.log("Incorrect confirm password!");
+          return;
         }
       } else {
         console.log("Please fill out all the fields!");
+        return;
       }
     },
   },

@@ -1,53 +1,36 @@
 <template>
   <div>
     <v-toolbar>
-      <v-toolbar-title
-        class="d-flex align-center"
-        @click="$router.push('/')"
-        style="cursor: pointer"
-      >
+      <v-toolbar-title class="d-flex align-center" @click="$router.push('/')" style="cursor: pointer">
         <v-icon color="pink" size="48px">mdi-movie-open</v-icon>
         <span class="text-h5 ml-2 text--pink">MOMOVIES</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <!-- Hamburger navbar -->
-      <v-app-bar-nav-icon
-        class="hidden-md-and-up"
-        @click="drawer = !drawer"
-      ></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon class="hidden-md-and-up" @click="drawer = !drawer"></v-app-bar-nav-icon>
       <!-- navbar -->
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn
-          text
-          link
-          v-for="(item, index) in items"
-          :key="index"
-          :to="item.link"
-          >{{ item.title }}</v-btn
-        >
+        <v-btn text link v-for="(item, index) in items" :key="index" :to="item.link">{{ item.title }}</v-btn>
         <!-- log in log out -->
         <client-only>
           <v-btn text link v-if="!user" to="/login">Sign In</v-btn>
-          <v-btn text link v-else v-on:click="signOut()"
-            >Sign Out</v-btn
-          ></client-only
-        >
+          <v-btn text link v-else v-on:click="signOut()">Sign Out</v-btn>
+        </client-only>
       </v-toolbar-items>
 
       <!-- Search icon -->
       <v-btn icon @click="$nuxt.$emit('openOverlay', true)">
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
+      <v-btn icon @click.prevent="toggleMode">
+        <v-icon v-if="!mode">mdi-white-balance-sunny</v-icon>
+        <v-icon v-else>mdi-weather-night</v-icon>
+      </v-btn>
     </v-toolbar>
     <!-- content mobile nav -->
     <v-navigation-drawer v-model="drawer" temporary absolute>
       <v-list dense nav>
-        <v-list-item
-          v-for="(item, index) in items"
-          exact
-          :key="index"
-          :to="item.link"
-        >
+        <v-list-item v-for="(item, index) in items" exact :key="index" :to="item.link">
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -74,7 +57,7 @@
 
             <v-list-item-content>
               <v-list-item-title v-on:click="signOut()">{{
-                user.email
+              user.email
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -96,6 +79,7 @@ export default {
         { title: "Actors", icon: "mdi-account-multiple", link: "/actors" },
       ],
       drawer: false,
+      mode: false,
     };
   },
   computed: {
@@ -108,9 +92,23 @@ export default {
       this.$fire.auth.signOut();
       window.location = "/";
     },
+    toggleMode() {
+      this.mode = !this.mode;
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      localStorage.setItem("useDarkTheme", this.$vuetify.theme.dark.toString())
+    }
+  },
+  mounted() {
+    const theme = localStorage.getItem("useDarkTheme");
+    if (theme) {
+      if (theme == "false") {
+        this.$vuetify.theme.dark = false;
+      } else this.$vuetify.theme.dark = true;
+    }
   },
 };
 </script>
 
 <style>
+
 </style>
